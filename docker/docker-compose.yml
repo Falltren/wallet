@@ -1,0 +1,20 @@
+version: '3.9'
+
+name: wallet
+services:
+
+  psql:
+    container_name: wallet_db
+    image: postgres:15.4
+    ports:
+      - "5432:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: wallet_db
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+
+volumes:
+  database-data:

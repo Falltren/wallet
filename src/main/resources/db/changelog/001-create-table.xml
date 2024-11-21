@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
+                   logicalFilePath="db/changelog/db.changelog-master.xml">
+
+    <changeSet id="001-create-table" author="fallt">
+
+        <createTable tableName="wallets">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount" type="numeric(20, 2)" defaultValueNumeric="0.00"/>
+        </createTable>
+
+        <createTable tableName="payment">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP(6) WITHOUT TIMEZONE"/>
+            <column name="amount" type="numeric(20, 2)"/>
+            <column name="wallet_id" type="uuid"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="payment"
+                                 baseColumnNames="wallet_id"
+                                 constraintName="fk_payment"
+                                 referencedTableName="wallets"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
