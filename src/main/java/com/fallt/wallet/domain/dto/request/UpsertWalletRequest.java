@@ -2,6 +2,7 @@ package com.fallt.wallet.domain.dto.request;
 
 import com.fallt.wallet.domain.entity.enums.OperationType;
 import com.fallt.wallet.validation.OperationTypeValidation;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class UpsertWalletRequest {
 
+    @NotNull(message = "id value must be specified")
     private String walletId;
 
     @OperationTypeValidation(enumClass = OperationType.class)

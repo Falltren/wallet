@@ -9,6 +9,7 @@ import com.fallt.wallet.exception.EntityNotFoundException;
 import com.fallt.wallet.exception.NotHaveEnoughFunds;
 import com.fallt.wallet.mapper.WalletMapper;
 import com.fallt.wallet.repository.WalletRepository;
+import com.fallt.wallet.service.TransactionService;
 import com.fallt.wallet.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,11 @@ import java.util.UUID;
 public class WalletServiceImpl implements WalletService {
 
     private final WalletRepository walletRepository;
+    private final TransactionService transactionService;
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public UpsertWalletResponse changeAmount(UpsertWalletRequest request) {
+    public UpsertWalletResponse changeBalance(UpsertWalletRequest request) {
         Wallet wallet = getWalletById(request.getWalletId());
         BigDecimal newValue = null;
         if (request.getOperationType().equals(OperationType.DEPOSIT.name())) {
@@ -40,7 +42,8 @@ public class WalletServiceImpl implements WalletService {
             }
         }
         wallet.setAmount(newValue);
-        walletRepository.save(wallet);
+        Wallet savedWallet = walletRepository.save(wallet);
+        transactionService.save(request, savedWallet);
         return UpsertWalletResponse.builder()
                 .isSuccess(true)
                 .build();

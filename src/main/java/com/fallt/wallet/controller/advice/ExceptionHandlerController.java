@@ -15,7 +15,7 @@ import java.util.Objects;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNotFoundException(Exception e) {
         ErrorResponse body = com.fallt.wallet.domain.dto.response.ErrorResponse.builder()
                 .timestamp(System.currentTimeMillis())
                 .errorDescription(e.getMessage())
@@ -25,7 +25,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, NotHaveEnoughFunds.class})
-    public ResponseEntity<ErrorResponse> handleValidationException(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleBadRequestException(Exception ex) {
         String cause = (ex instanceof MethodArgumentNotValidException exception) ?
                 Objects.requireNonNull(exception.getBindingResult().getFieldError()).getDefaultMessage() : ex.getMessage();
         ErrorResponse body = ErrorResponse.builder()

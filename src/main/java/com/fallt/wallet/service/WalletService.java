@@ -6,7 +6,7 @@ import com.fallt.wallet.domain.dto.response.WalletBalance;
 
 public interface WalletService {
 
-    UpsertWalletResponse changeAmount(UpsertWalletRequest request);
+    UpsertWalletResponse changeBalance(UpsertWalletRequest request);
 
     WalletBalance getBalance(String uuid);
 
