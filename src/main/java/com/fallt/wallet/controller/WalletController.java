@@ -1,9 +1,10 @@
 package com.fallt.wallet.controller;
 
-import com.fallt.wallet.domain.dto.request.TransactionRequest;
-import com.fallt.wallet.domain.dto.response.TransactionResponse;
+import com.fallt.wallet.domain.dto.request.UpsertWalletRequest;
+import com.fallt.wallet.domain.dto.response.UpsertWalletResponse;
 import com.fallt.wallet.domain.dto.response.WalletBalance;
 import com.fallt.wallet.service.WalletService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ public class WalletController {
     }
 
     @PostMapping("/api/v1/wallet")
-    public TransactionResponse changeBalance(@RequestBody TransactionRequest request) {
+    public UpsertWalletResponse changeBalance(@RequestBody @Valid UpsertWalletRequest request) {
         return walletService.changeAmount(request);
     }
 

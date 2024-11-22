@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TransactionResponse {
+public class UpsertWalletResponse {
 
     @JsonProperty("is_success")
     private boolean isSuccess;
