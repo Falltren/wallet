@@ -12,6 +12,10 @@ import com.fallt.wallet.repository.WalletRepository;
 import com.fallt.wallet.service.TransactionService;
 import com.fallt.wallet.service.WalletService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WalletServiceImpl implements WalletService {
 
     private final WalletRepository walletRepository;
@@ -30,6 +35,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
+    @CacheEvict(value = "wallets", key = "#request.walletId")
     public UpsertWalletResponse changeBalance(UpsertWalletRequest request) {
         Wallet wallet = getWalletById(request.getWalletId());
         BigDecimal newValue = null;
@@ -50,8 +56,10 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Cacheable(value = "wallets", key = "#uuid")
     public WalletBalance getBalance(String uuid) {
         Wallet wallet = getWalletById(uuid);
+        log.info("Вызов метода getBalance()");
         return WalletMapper.INSTANCE.toResponse(wallet);
     }
 
