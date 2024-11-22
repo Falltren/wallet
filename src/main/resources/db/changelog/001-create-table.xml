@@ -14,7 +14,7 @@
             <column name="amount" type="numeric(20, 2)" defaultValueNumeric="0.00"/>
         </createTable>
 
-        <createTable tableName="payment">
+        <createTable tableName="transaction">
             <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -26,7 +26,7 @@
             <column name="wallet_id" type="uuid"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="payment"
+        <addForeignKeyConstraint baseTableName="transaction"
                                  baseColumnNames="wallet_id"
                                  constraintName="fk_payment"
                                  referencedTableName="wallets"
