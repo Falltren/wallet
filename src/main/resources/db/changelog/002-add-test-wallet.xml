@@ -5,7 +5,10 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
                    logicalFilePath="db/changelog/db.changelog-master.xml">
 
-    <include file="001-create-table.xml" relativeToChangelogFile="true"/>
-    <include file="002-add-test-wallet.xml" relativeToChangelogFile="true"/>
-
+    <changeSet id="002-add-test-wallet" author="fallt">
+        <insert tableName="wallets">
+            <column name="id" value="1ae92e91-7f45-4410-9f60-88db2eb4418a"/>
+            <column name="amount" value="10000"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

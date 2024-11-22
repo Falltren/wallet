@@ -1,0 +1,59 @@
+version: '3.9'
+
+name: wallet
+services:
+
+  app:
+    container_name: wallet-app
+    image: wallet-app:0.0.1
+    restart: on-failure
+    depends_on:
+      - psql
+      - redis
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  psql:
+    container_name: wallet_db
+    image: postgres:15.4
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      POSTGRES_DB: ${SPRING_DATASOURCE_URL}
+    volumes:
+      - ./db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - database-data:/var/lib/postgresql/data/
+    networks:
+      - app-network
+
+  redis:
+    container_name: wallet_redis
+    image: redis:7.0.12
+    restart: on-failure
+    hostname: redis
+    command: --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
+
+volumes:
+  database-data:
