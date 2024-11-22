@@ -11,7 +11,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
@@ -45,8 +44,6 @@ public abstract class AbstractTest {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    protected WebApplicationContext webApplicationContext;
-
-    @Autowired
     protected MockMvc mockMvc;
+
 }
